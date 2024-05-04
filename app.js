@@ -1,4 +1,5 @@
 const express = require("express");
+const methodOverride = require("method-override");
 const mongoose = require("mongoose");
 const path = require("path");
 
@@ -24,6 +25,7 @@ app.set("views", path.join(__dirname, "views"));
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 
 app.get("/", (req, res) => {
   res.render("home");
@@ -47,6 +49,18 @@ app.post("/beaches", async (req, res) => {
 app.get("/beaches/:id", async (req, res) => {
   const beach = await Beach.findById(req.params.id);
   res.render("beaches/detail", { beach });
+});
+
+app.get("/beaches/:id/update", async (req, res) => {
+  const beach = await Beach.findById(req.params.id);
+  res.render("beaches/update", { beach });
+});
+
+app.put("/beaches/:id", async (req, res) => {
+  await Beach.findByIdAndUpdate(req.params.id, {
+    ...req.body.beach,
+  });
+  res.redirect("/beaches");
 });
 
 app.get("/seed/beach", async (req, res) => {
