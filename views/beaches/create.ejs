@@ -1,18 +1,57 @@
 <% layout("layouts/app") %>
 
-<h1>Add Beach</h1>
-<form action="/beaches" method="POST">
-  <div>
-    <label for="title">Title</label>
-    <input type="text" name="beach[title]" id="title" required />
-  </div>
-  <div>
-    <label for="location">Location</label>
-    <input type="text" name="beach[location]" id="location" required />
-  </div>
-  <div>
-    <label for="cost">Cost</label>
-    <input type="text" name="beach[cost]" id="cost" required />
-  </div>
-  <button type="submit">Save</button>
-</form>
+<h1 class="text-center">Add Beach</h1>
+<div class="col-6 offset-3">
+  <form action="/beaches" method="POST">
+    <div class="mb-3">
+      <label for="title" class="form-label">Title</label>
+      <input
+        type="text"
+        name="beach[title]"
+        id="title"
+        required
+        class="form-control"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="location" class="form-label">Location</label>
+      <input
+        type="text"
+        name="beach[location]"
+        id="location"
+        required
+        class="form-control"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="cost" class="form-label">Cost</label>
+      <input
+        type="text"
+        name="beach[cost]"
+        id="cost"
+        required
+        class="form-control"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <textarea
+        name="beach[description]"
+        id="description"
+        required
+        class="form-control"
+      ></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="image" class="form-label">Image Url</label>
+      <input
+        type="text"
+        name="beach[image]"
+        id="image"
+        class="form-control"
+        required
+      />
+    </div>
+    <button type="submit" class="btn btn-success">Save</button>
+  </form>
+</div>
