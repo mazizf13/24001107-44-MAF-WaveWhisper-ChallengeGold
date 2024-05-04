@@ -31,6 +31,11 @@ app.get("/beaches", async (req, res) => {
   res.render("beaches/index", { beaches });
 });
 
+app.get("/beaches/:id", async (req, res) => {
+  const beach = await Beach.findById(req.params.id);
+  res.render("beaches/detail", { beach });
+});
+
 app.get("/seed/beach", async (req, res) => {
   const beach = new Beach({
     title: "Kuta Beach",

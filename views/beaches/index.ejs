@@ -9,7 +9,7 @@
     <h1>All Beaches</h1>
     <ul>
       <% for (const beach of beaches) { %>
-      <li><%= beach.title %></li>
+      <li><a href="/beaches/<%= beach._id %>"><%= beach.title %></a></li>
       <% } %>
     </ul>
   </body>
