@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
 app.get("/seed/beach", async (req, res) => {
   const beach = new Beach({
     title: "Kuta Beach",
-    price: "$20",
+    cost: "$20/person",
     description:
       "You won’t find peace and quiet here, but it’s still worth a visit. Shop at the Beachwalk Mall, go surfing, or watch the sunset with a Bintang.",
     location: "Badung, Bali",
