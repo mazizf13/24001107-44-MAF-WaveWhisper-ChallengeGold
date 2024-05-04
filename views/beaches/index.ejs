@@ -2,8 +2,28 @@
 
 <h1>All Beaches</h1>
 <a href="/beaches/create">Add Beach</a>
-<ul>
-  <% for (const beach of beaches) { %>
-  <li><a href="/beaches/<%= beach._id %>"><%= beach.title %></a></li>
-  <% } %>
-</ul>
+<% for (const beach of beaches) { %>
+<div class="card mb-3">
+  <div class="row">
+    <div class="col-md-4">
+      <img
+        src="<%= beach.image %>"
+        alt="<%= beach.title %>"
+        class="img-fluid"
+      />
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title"><%= beach.title %></h5>
+        <p class="card-text"><%= beach.description %></p>
+        <p class="card-text">
+          <small class="text-secondary"><%= beach.location %></small>
+        </p>
+        <a href="/beaches/<%= beach._id %>" class="btn btn-primary"
+          >View <%= beach.title %></a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+<% } %>
