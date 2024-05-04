@@ -1,4 +1,5 @@
 const express = require("express");
+const ejsMate = require("ejs-mate");
 const methodOverride = require("method-override");
 const mongoose = require("mongoose");
 const path = require("path");
@@ -20,6 +21,7 @@ mongoose
     console.error("Error connectingg to MongoDB:", error);
   });
 
+app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 

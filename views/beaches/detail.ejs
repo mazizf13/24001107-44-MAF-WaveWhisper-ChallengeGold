@@ -1,22 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WaveWhisper <%= beach.title %></title>
-  </head>
-  <body>
-    <h1><%= beach.title %></h1>
-    <h1><%= beach.location %></h1>
-    <form
-      action="/beaches/<%= beach._id %>?_method=DELETE"
-      method="POST"
-      onclick="return confirm('yakin?')"
-      style="display: inline !important"
-    >
-      <button type="submit">Delete</button>
-    </form>
-    <a href="/beaches/<%= beach._id %>/update">Update</a>
-    <a href="/beaches">All Beaches</a>
-  </body>
-</html>
+<% layout("layouts/app") %>
+
+<h1><%= beach.title %></h1>
+<h1><%= beach.location %></h1>
+<form
+  action="/beaches/<%= beach._id %>?_method=DELETE"
+  method="POST"
+  onclick="return confirm('yakin?')"
+  style="display: inline !important"
+>
+  <button type="submit">Delete</button>
+</form>
+<a href="/beaches/<%= beach._id %>/update">Update</a>
+<a href="/beaches">All Beaches</a>
