@@ -26,6 +26,11 @@ app.get("/", (req, res) => {
   res.render("home");
 });
 
+app.get("/beaches", async (req, res) => {
+  const beaches = await Beach.find();
+  res.render("beaches/index", { beaches });
+});
+
 app.get("/seed/beach", async (req, res) => {
   const beach = new Beach({
     title: "Kuta Beach",
