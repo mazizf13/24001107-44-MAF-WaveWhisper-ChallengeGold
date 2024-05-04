@@ -22,6 +22,9 @@ mongoose
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+// Middleware
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/", (req, res) => {
   res.render("home");
 });
@@ -29,6 +32,16 @@ app.get("/", (req, res) => {
 app.get("/beaches", async (req, res) => {
   const beaches = await Beach.find();
   res.render("beaches/index", { beaches });
+});
+
+app.get("/beaches/create", (req, res) => {
+  res.render("beaches/create");
+});
+
+app.post("/beaches", async (req, res) => {
+  const beach = new Beach(req.body.beach);
+  await beach.save();
+  res.redirect("/beaches");
 });
 
 app.get("/beaches/:id", async (req, res) => {

@@ -7,6 +7,7 @@
   </head>
   <body>
     <h1>All Beaches</h1>
+    <a href="/beaches/create">Add Beach</a>
     <ul>
       <% for (const beach of beaches) { %>
       <li><a href="/beaches/<%= beach._id %>"><%= beach.title %></a></li>
