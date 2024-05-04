@@ -63,6 +63,11 @@ app.put("/beaches/:id", async (req, res) => {
   res.redirect("/beaches");
 });
 
+app.delete("/beaches/:id", async (req, res) => {
+  await Beach.findByIdAndDelete(req.params.id);
+  res.redirect("/beaches");
+});
+
 app.get("/seed/beach", async (req, res) => {
   const beach = new Beach({
     title: "Kuta Beach",
