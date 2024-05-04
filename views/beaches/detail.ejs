@@ -1,7 +1,10 @@
 <% layout("layouts/app") %>
 
 <h1><%= beach.title %></h1>
-<h1><%= beach.location %></h1>
+<h2><%= beach.location %></h2>
+<img src="<%= beach.image %>" alt="" />
+<p><%= beach.description %></p>
+
 <form
   action="/beaches/<%= beach._id %>?_method=DELETE"
   method="POST"
