@@ -2,7 +2,7 @@
 
 <h1 class="text-center">Add Beach</h1>
 <div class="col-6 offset-3">
-  <form action="/beaches" method="POST">
+  <form action="/beaches" method="POST" class="needs-validation" novalidate>
     <div class="mb-3">
       <label for="title" class="form-label">Title</label>
       <input
@@ -12,6 +12,8 @@
         required
         class="form-control"
       />
+      <div class="valid-feedback">Looks good!</div>
+      <div class="invalid-feedback">Please fill the blank.</div>
     </div>
     <div class="mb-3">
       <label for="location" class="form-label">Location</label>
@@ -22,6 +24,8 @@
         required
         class="form-control"
       />
+      <div class="valid-feedback">Looks good!</div>
+      <div class="invalid-feedback">Please fill the blank.</div>
     </div>
     <div class="mb-3">
       <label for="cost" class="form-label">Cost</label>
@@ -32,6 +36,8 @@
         required
         class="form-control"
       />
+      <div class="valid-feedback">Looks good!</div>
+      <div class="invalid-feedback">Please fill the blank.</div>
     </div>
     <div class="mb-3">
       <label for="description" class="form-label">Description</label>
@@ -41,6 +47,8 @@
         required
         class="form-control"
       ></textarea>
+      <div class="valid-feedback">Looks good!</div>
+      <div class="invalid-feedback">Please fill the blank.</div>
     </div>
     <div class="mb-3">
       <label for="image" class="form-label">Image Url</label>
@@ -51,7 +59,32 @@
         class="form-control"
         required
       />
+      <div class="valid-feedback">Looks good!</div>
+      <div class="invalid-feedback">Please fill the blank.</div>
     </div>
     <button type="submit" class="btn btn-success">Save</button>
   </form>
 </div>
+
+<script>
+  (() => {
+    "use strict";
+
+    const forms = document.querySelectorAll(".needs-validation");
+
+    Array.from(forms).forEach((form) => {
+      form.addEventListener(
+        "submit",
+        (event) => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+
+          form.classList.add("was-validated");
+        },
+        false
+      );
+    });
+  })();
+</script>
