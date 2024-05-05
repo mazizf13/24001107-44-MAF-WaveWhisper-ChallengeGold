@@ -26,6 +26,7 @@ router.post(
     beach.reviews.push(review);
     await review.save();
     await beach.save();
+    req.flash("succes_msg", "Review added succesfully");
     res.redirect(`/beaches/${req.params.beach_id}`);
   })
 );
@@ -38,6 +39,7 @@ router.delete(
       $pull: { reviews: review_id },
     });
     await Review.findByIdAndDelete(review_id);
+    req.flash("succes_msg", "Review deleted succesfully");
     res.redirect(`/beaches/${beach_id}`);
   })
 );

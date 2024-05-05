@@ -19,7 +19,9 @@
   <body class="d-flex flex-column vh-100">
     <%- include("partials/navbar") %>
 
-    <main class="container mt-3"><%- body %></main>
+    <main class="container mt-3">
+      <%- include("partials/alert") %> <%- body %>
+    </main>
 
     <%- include("partials/footer") %>
 

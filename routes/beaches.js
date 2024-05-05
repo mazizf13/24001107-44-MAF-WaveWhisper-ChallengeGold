@@ -34,6 +34,7 @@ router.post(
   asyncHandler(async (req, res, next) => {
     const beach = new Beach(req.body.beach);
     await beach.save();
+    req.flash("succes_msg", "Beach added succesfully");
     res.redirect("/beaches");
   })
 );
@@ -61,7 +62,8 @@ router.put(
     await Beach.findByIdAndUpdate(req.params.id, {
       ...req.body.beach,
     });
-    res.redirect("/beaches");
+    req.flash("succes_msg", "Beach updated succesfully");
+    res.redirect(`/beaches/${req.params.id}`);
   })
 );
 
@@ -69,6 +71,7 @@ router.delete(
   "/:id",
   asyncHandler(async (req, res) => {
     await Beach.findByIdAndDelete(req.params.id);
+    req.flash("succes_msg", "Beach deleted succesfully");
     res.redirect("/beaches");
   })
 );
