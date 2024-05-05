@@ -1,17 +1,40 @@
 <% layout("layouts/app") %>
 
-<h1><%= beach.title %></h1>
-<h2><%= beach.location %></h2>
-<img src="<%= beach.image %>" alt="" />
-<p><%= beach.description %></p>
-
-<form
-  action="/beaches/<%= beach._id %>?_method=DELETE"
-  method="POST"
-  onclick="return confirm('yakin?')"
-  style="display: inline !important"
->
-  <button type="submit">Delete</button>
-</form>
-<a href="/beaches/<%= beach._id %>/update">Update</a>
-<a href="/beaches">All Beaches</a>
+<div class="row">
+  <div class="col-6 offset-3">
+    <div class="card">
+      <img
+        src="<%= beach.image %>"
+        alt="<%= beach.title %>"
+        class="card-img-top"
+      />
+      <div class="card-body">
+        <h5 class="card-title"><%= beach.title %></h5>
+        <p class="card-text"><%= beach.description %></p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><%= beach.location %></li>
+        <li class="list-group-item"><%= beach.cost %></li>
+      </ul>
+      <div class="card-body">
+        <a
+          href="/beaches/<%= beach._id %>/update"
+          class="btn btn-warning card-link text-white"
+          >Edit</a
+        >
+        <form
+          action="/beaches/<%= beach._id %>?_method=DELETE"
+          method="POST"
+          style="display: inline !important"
+        >
+          <button
+            class="btn btn-danger"
+            onclick="return confirm('Are you sure you want to delete?')"
+          >
+            Delete
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
