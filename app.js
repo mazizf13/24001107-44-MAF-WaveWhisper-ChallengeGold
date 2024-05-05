@@ -15,6 +15,7 @@ const Review = require("./models/review");
 
 // Schemas
 const { beachSchema } = require("./schemas/beach");
+const { reviewSchema } = require("./schemas/review");
 
 // Connect to mongodb
 mongoose
@@ -36,6 +37,16 @@ app.use(methodOverride("_method"));
 
 const validateBeach = (req, res, next) => {
   const { error } = beachSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(",");
+    return next(new ErrorHandler(msg, 400));
+  } else {
+    next();
+  }
+};
+
+const validateReview = (req, res, next) => {
+  const { error } = reviewSchema.validate(req.body);
   if (error) {
     const msg = error.details.map((el) => el.message).join(",");
     return next(new ErrorHandler(msg, 400));
@@ -107,6 +118,7 @@ app.delete(
 
 app.post(
   "/beaches/:id/reviews",
+  validateReview,
   asyncHandler(async (req, res) => {
     const review = new Review(req.body.review);
     const beach = await Beach.findById(req.params.id);
