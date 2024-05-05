@@ -77,6 +77,14 @@
       <div class="card-body">
         <h5 class="card-title">Rating: <%= review.rating %></h5>
         <p class="card-text"><%= review.body %></p>
+        <form
+          action="/beaches/<%= beach._id %>/reviews/<%= review._id %>?_method=DELETE"
+          method="POST"
+          style="display: inline !important"
+          onsubmit="return confirm('Are you sure you want to delete?')"
+        >
+          <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
       </div>
     </div>
     <% } %>
