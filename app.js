@@ -1,7 +1,6 @@
 const express = require("express");
 const ejsMate = require("ejs-mate");
 const methodOverride = require("method-override");
-const Joi = require("joi");
 const mongoose = require("mongoose");
 const path = require("path");
 const asyncHandler = require("./utils/asyncHandler");
@@ -12,7 +11,7 @@ const port = 3000;
 
 // Models
 const Beach = require("./models/beach");
-const { error } = require("console");
+const Review = require("./models/review");
 
 // Schemas
 const { beachSchema } = require("./schemas/beach");
@@ -103,6 +102,18 @@ app.delete(
   asyncHandler(async (req, res) => {
     await Beach.findByIdAndDelete(req.params.id);
     res.redirect("/beaches");
+  })
+);
+
+app.post(
+  "/beaches/:id/reviews",
+  asyncHandler(async (req, res) => {
+    const review = new Review(req.body.review);
+    const beach = await Beach.findById(req.params.id);
+    beach.reviews.push(review);
+    await review.save();
+    await beach.save();
+    res.redirect(`/beaches/${req.params.id}`);
   })
 );
 
