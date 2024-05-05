@@ -14,6 +14,9 @@ const port = 3000;
 const Beach = require("./models/beach");
 const { error } = require("console");
 
+// Schemas
+const { beachSchema } = require("./schemas/beach");
+
 // Connect to mongodb
 mongoose
   .connect("mongodb://127.0.0.1/wave_whisper")
@@ -31,6 +34,16 @@ app.set("views", path.join(__dirname, "views"));
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
+
+const validateBeach = (req, res, next) => {
+  const { error } = beachSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(",");
+    return next(new ErrorHandler(msg, 400));
+  } else {
+    next();
+  }
+};
 
 app.get("/", (req, res) => {
   res.render("home");
@@ -50,23 +63,8 @@ app.get("/beaches/create", (req, res) => {
 
 app.post(
   "/beaches",
+  validateBeach,
   asyncHandler(async (req, res, next) => {
-    const beachSchema = Joi.object({
-      beach: Joi.object({
-        title: Joi.string().required(),
-        location: Joi.string().required(),
-        cost: Joi.number().min(0).required(),
-        description: Joi.string().required(),
-        image: Joi.string().required(),
-      }).required(),
-    });
-
-    const { error } = beachSchema.validate(req.body);
-    if (error) {
-      console.log(error);
-      return next(new ErrorHandler(error, 400));
-    }
-
     const beach = new Beach(req.body.beach);
     await beach.save();
     res.redirect("/beaches");
@@ -91,6 +89,7 @@ app.get(
 
 app.put(
   "/beaches/:id",
+  validateBeach,
   asyncHandler(async (req, res) => {
     await Beach.findByIdAndUpdate(req.params.id, {
       ...req.body.beach,
