@@ -1,6 +1,7 @@
 const express = require("express");
 const ejsMate = require("ejs-mate");
 const methodOverride = require("method-override");
+const Joi = require("joi");
 const mongoose = require("mongoose");
 const path = require("path");
 const asyncHandler = require("./utils/asyncHandler");
@@ -50,6 +51,22 @@ app.get("/beaches/create", (req, res) => {
 app.post(
   "/beaches",
   asyncHandler(async (req, res, next) => {
+    const beachSchema = Joi.object({
+      beach: Joi.object({
+        title: Joi.string().required(),
+        location: Joi.string().required(),
+        cost: Joi.string().required(),
+        description: Joi.string().required(),
+        image: Joi.string().required(),
+      }).required(),
+    });
+
+    const { error } = beachSchema.validate(req.body);
+    if (error) {
+      console.log(error);
+      return next(new ErrorHandler(error, 400));
+    }
+
     const beach = new Beach(req.body.beach);
     await beach.save();
     res.redirect("/beaches");
