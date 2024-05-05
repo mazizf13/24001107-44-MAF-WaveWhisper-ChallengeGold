@@ -84,7 +84,7 @@ app.post(
 app.get(
   "/beaches/:id",
   asyncHandler(async (req, res) => {
-    const beach = await Beach.findById(req.params.id);
+    const beach = await Beach.findById(req.params.id).populate("reviews");
     res.render("beaches/detail", { beach });
   })
 );
