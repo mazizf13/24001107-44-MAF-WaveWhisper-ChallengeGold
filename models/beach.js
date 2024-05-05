@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const beachSchema = new Schema({
   title: String,
-  cost: String,
+  cost: Number,
   description: String,
   location: String,
   image: String,
