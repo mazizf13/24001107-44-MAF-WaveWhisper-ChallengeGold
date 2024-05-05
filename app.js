@@ -3,6 +3,8 @@ const ejsMate = require("ejs-mate");
 const methodOverride = require("method-override");
 const mongoose = require("mongoose");
 const path = require("path");
+const asyncHandler = require("./utils/asyncHandler");
+const ErrorHandler = require("./utils/ErrorHandler");
 
 const app = express();
 const port = 3000;
@@ -18,7 +20,7 @@ mongoose
     console.log("Connected to MongoDB");
   })
   .catch((error) => {
-    console.error("Error connectingg to MongoDB:", error);
+    console.error("Error connecting to MongoDB:", error);
   });
 
 app.engine("ejs", ejsMate);
@@ -33,54 +35,69 @@ app.get("/", (req, res) => {
   res.render("home");
 });
 
-app.get("/beaches", async (req, res) => {
-  const beaches = await Beach.find();
-  res.render("beaches/index", { beaches });
-});
+app.get(
+  "/beaches",
+  asyncHandler(async (req, res) => {
+    const beaches = await Beach.find();
+    res.render("beaches/index", { beaches });
+  })
+);
 
 app.get("/beaches/create", (req, res) => {
   res.render("beaches/create");
 });
 
-app.post("/beaches", async (req, res) => {
-  const beach = new Beach(req.body.beach);
-  await beach.save();
-  res.redirect("/beaches");
+app.post(
+  "/beaches",
+  asyncHandler(async (req, res, next) => {
+    const beach = new Beach(req.body.beach);
+    await beach.save();
+    res.redirect("/beaches");
+  })
+);
+
+app.get(
+  "/beaches/:id",
+  asyncHandler(async (req, res) => {
+    const beach = await Beach.findById(req.params.id);
+    res.render("beaches/detail", { beach });
+  })
+);
+
+app.get(
+  "/beaches/:id/update",
+  asyncHandler(async (req, res) => {
+    const beach = await Beach.findById(req.params.id);
+    res.render("beaches/update", { beach });
+  })
+);
+
+app.put(
+  "/beaches/:id",
+  asyncHandler(async (req, res) => {
+    await Beach.findByIdAndUpdate(req.params.id, {
+      ...req.body.beach,
+    });
+    res.redirect("/beaches");
+  })
+);
+
+app.delete(
+  "/beaches/:id",
+  asyncHandler(async (req, res) => {
+    await Beach.findByIdAndDelete(req.params.id);
+    res.redirect("/beaches");
+  })
+);
+
+app.all("*", (req, res, next) => {
+  next(new ErrorHandler("Page not found", 404));
 });
 
-app.get("/beaches/:id", async (req, res) => {
-  const beach = await Beach.findById(req.params.id);
-  res.render("beaches/detail", { beach });
-});
-
-app.get("/beaches/:id/update", async (req, res) => {
-  const beach = await Beach.findById(req.params.id);
-  res.render("beaches/update", { beach });
-});
-
-app.put("/beaches/:id", async (req, res) => {
-  await Beach.findByIdAndUpdate(req.params.id, {
-    ...req.body.beach,
-  });
-  res.redirect("/beaches");
-});
-
-app.delete("/beaches/:id", async (req, res) => {
-  await Beach.findByIdAndDelete(req.params.id);
-  res.redirect("/beaches");
-});
-
-app.get("/seed/beach", async (req, res) => {
-  const beach = new Beach({
-    title: "Kuta Beach",
-    cost: "$20/person",
-    description:
-      "You won’t find peace and quiet here, but it’s still worth a visit. Shop at the Beachwalk Mall, go surfing, or watch the sunset with a Bintang.",
-    location: "Badung, Bali",
-  });
-
-  await beach.save();
-  res.send(beach);
+app.use((err, req, res, next) => {
+  const { statusCode = 500 } = err;
+  if (!err.message) err.message = "Oops! Something Went Wrong.";
+  res.status(statusCode).render("error", { err });
 });
 
 app.listen(port, () => {
