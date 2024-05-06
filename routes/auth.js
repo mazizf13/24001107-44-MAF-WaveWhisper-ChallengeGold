@@ -10,7 +10,16 @@ router.get("/register", (req, res) => {
 router.post(
   "/register",
   asyncHandler(async (req, res) => {
-    res.send(req.body);
+    try {
+      const { username, email, password } = req.body;
+      const user = new User({ username, email });
+      await User.register(user, password);
+      req.flash("success_msg", "You are registered and can logged in");
+      res.redirect("/login");
+    } catch (error) {
+      req.flash("error_msg", error.message);
+      res.redirect("/register");
+    }
   })
 );
 
