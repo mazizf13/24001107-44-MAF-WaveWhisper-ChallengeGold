@@ -48,8 +48,14 @@ router.get(
   isValidObjectId("/beaches"),
   asyncHandler(async (req, res) => {
     const beach = await Beach.findById(req.params.id)
-      .populate("reviews")
+      .populate({
+        path: "reviews",
+        populate: {
+          path: "author",
+        },
+      })
       .populate("author");
+    console.log(beach);
     res.render("beaches/detail", { beach });
   })
 );
