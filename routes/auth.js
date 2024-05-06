@@ -14,9 +14,12 @@ router.post(
     try {
       const { username, email, password } = req.body;
       const user = new User({ username, email });
-      await User.register(user, password);
-      req.flash("success_msg", "You are registered and can logged in");
-      res.redirect("/login");
+      const registerUser = await User.register(user, password);
+      req.login(registerUser, (err) => {
+        if (err) return next(err);
+        req.flash("success_msg", "You are registered and logged in");
+        res.redirect("/beaches");
+      });
     } catch (error) {
       req.flash("error_msg", error.message);
       res.redirect("/register");
