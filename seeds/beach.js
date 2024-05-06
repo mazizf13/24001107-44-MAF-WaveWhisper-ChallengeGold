@@ -213,8 +213,12 @@ async function seedBeaches() {
   ];
 
   try {
+    const newBeach = beaches.map((beach) => {
+      return { ...beach, author: "6638483fadf487edf4b0adeb" };
+    });
+
     await Beach.deleteMany({});
-    await Beach.insertMany(beaches);
+    await Beach.insertMany(newBeach);
     console.log("Data saved successfully");
   } catch (error) {
     console.log("An error occurred while saving data:", error);
