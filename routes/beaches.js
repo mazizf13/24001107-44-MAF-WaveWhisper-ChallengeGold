@@ -69,11 +69,19 @@ router.put(
   isValidObjectId("/beaches"),
   validateBeach,
   asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    let beach = await Beach.findById(id);
+
+    if (!beach.author.equals(req.user._id)) {
+      req.flash("error_msg", "Not authorized");
+      return res.redirect("/beaches");
+    }
+
     await Beach.findByIdAndUpdate(req.params.id, {
       ...req.body.beach,
     });
     req.flash("success_msg", "Beach updated successfully");
-    res.redirect(`/beaches/${req.params.id}`);
+    res.redirect(`/beaches/${id}`);
   })
 );
 
