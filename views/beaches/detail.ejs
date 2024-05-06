@@ -17,6 +17,7 @@
         <li class="list-group-item">Author: <%= beach.author.username %></li>
         <li class="list-group-item"><%= beach.cost %></li>
       </ul>
+      <% if(currentUser && beach.author.equals(currentUser._id)) { %>
       <div class="card-body">
         <a
           href="/beaches/<%= beach._id %>/update"
@@ -36,6 +37,7 @@
           </button>
         </form>
       </div>
+      <% } %>
     </div>
   </div>
   <div class="col-6">
