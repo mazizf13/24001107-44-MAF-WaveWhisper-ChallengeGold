@@ -4,6 +4,7 @@ const Review = require("../models/review");
 const { reviewSchema } = require("../schemas/review");
 const ErrorHandler = require("../utils/ErrorHandler");
 const asyncHandler = require("../utils/asyncHandler");
+const isValidObjectId = require("../middleware/isValidObjectId");
 
 const router = express.Router({ mergeParams: true });
 
@@ -19,6 +20,7 @@ const validateReview = (req, res, next) => {
 
 router.post(
   "/",
+  isValidObjectId("/beaches"),
   validateReview,
   asyncHandler(async (req, res) => {
     const review = new Review(req.body.review);
@@ -26,20 +28,21 @@ router.post(
     beach.reviews.push(review);
     await review.save();
     await beach.save();
-    req.flash("succes_msg", "Review added succesfully");
+    req.flash("success_msg", "Review added successfully");
     res.redirect(`/beaches/${req.params.beach_id}`);
   })
 );
 
 router.delete(
   "/:review_id",
+  isValidObjectId("/beaches"),
   asyncHandler(async (req, res) => {
     const { beach_id, review_id } = req.params;
     await Beach.findByIdAndUpdate(beach_id, {
       $pull: { reviews: review_id },
     });
     await Review.findByIdAndDelete(review_id);
-    req.flash("succes_msg", "Review deleted succesfully");
+    req.flash("success_msg", "Review deleted successfully");
     res.redirect(`/beaches/${beach_id}`);
   })
 );
