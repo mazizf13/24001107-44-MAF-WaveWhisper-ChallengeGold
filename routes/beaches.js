@@ -3,7 +3,7 @@ const Beach = require("../models/beach");
 const { beachSchema } = require("../schemas/beach");
 const ErrorHandler = require("../utils/ErrorHandler");
 const asyncHandler = require("../utils/asyncHandler");
-const isValidObjectId = require("../middleware/isValidObjectId");
+const isValidObjectId = require("../middlewares/isValidObjectId");
 
 const router = express.Router();
 
