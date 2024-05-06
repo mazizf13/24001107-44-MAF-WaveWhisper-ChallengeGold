@@ -41,6 +41,7 @@
     </div>
   </div>
   <div class="col-6">
+    <% if(currentUser) { %>
     <h3>Leave a Review</h3>
     <form
       action="/beaches/<%= beach._id %>/reviews"
@@ -75,7 +76,7 @@
       </div>
       <button type="submit" class="btn btn-success">Send</button>
     </form>
-    <% for(const review of beach.reviews) { %>
+    <% } %> <% for(const review of beach.reviews) { %>
     <div class="card mb-3">
       <div class="card-body">
         <h5 class="card-title">Rating: <%= review.rating %></h5>

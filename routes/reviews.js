@@ -25,13 +25,18 @@ router.post(
   isValidObjectId("/beaches"),
   validateReview,
   asyncHandler(async (req, res) => {
+    const { beach_id } = req.params;
+
     const review = new Review(req.body.review);
-    const beach = await Beach.findById(req.params.beach_id);
-    beach.reviews.push(review);
+    review.author = req.user._id;
     await review.save();
+
+    const beach = await Beach.findById(beach_id);
+    beach.reviews.push(review);
     await beach.save();
+
     req.flash("success_msg", "Review added successfully");
-    res.redirect(`/beaches/${req.params.beach_id}`);
+    res.redirect(`/beaches/${beach_id}`);
   })
 );
 
