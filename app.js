@@ -6,8 +6,11 @@ const methodOverride = require("method-override");
 const mongoose = require("mongoose");
 const path = require("path");
 const ErrorHandler = require("./utils/ErrorHandler");
-const app = express();
+const passport = require("passport");
+const localStrategy = require("passport-local");
+const User = require("./models/user");
 const port = 3000;
+const app = express();
 
 // Connect to mongodb
 mongoose
@@ -40,6 +43,12 @@ app.use(
   })
 );
 app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new localStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use((req, res, next) => {
   res.locals.success_msg = req.flash("success_msg");
   res.locals.error_msg = req.flash("error_msg");
@@ -48,6 +57,16 @@ app.use((req, res, next) => {
 
 app.get("/", (req, res) => {
   res.render("home");
+});
+
+app.get("/register", async (req, res) => {
+  const user = new User({
+    email: "user@gmail.com",
+    username: "user",
+  });
+
+  const newUser = await User.register(user, "password");
+  res.send(newUser);
 });
 
 app.use("/beaches", require("./routes/beaches"));
