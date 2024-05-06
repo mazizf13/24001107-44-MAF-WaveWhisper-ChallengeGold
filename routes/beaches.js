@@ -5,6 +5,7 @@ const ErrorHandler = require("../utils/ErrorHandler");
 const asyncHandler = require("../utils/asyncHandler");
 const isValidObjectId = require("../middlewares/isValidObjectId");
 const isAuth = require("../middlewares/isAuth");
+const { isAuthorBeach } = require("../middlewares/isAuthor");
 
 const router = express.Router();
 
@@ -56,6 +57,7 @@ router.get(
 router.get(
   "/:id/update",
   isAuth,
+  isAuthorBeach,
   isValidObjectId("/beaches"),
   asyncHandler(async (req, res) => {
     const beach = await Beach.findById(req.params.id);
@@ -66,28 +68,20 @@ router.get(
 router.put(
   "/:id",
   isAuth,
+  isAuthorBeach,
   isValidObjectId("/beaches"),
   validateBeach,
   asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    let beach = await Beach.findById(id);
-
-    if (!beach.author.equals(req.user._id)) {
-      req.flash("error_msg", "Not authorized");
-      return res.redirect("/beaches");
-    }
-
-    await Beach.findByIdAndUpdate(req.params.id, {
-      ...req.body.beach,
-    });
+    await Beach.findByIdAndUpdate(req.params.id, { ...req.body.beach });
     req.flash("success_msg", "Beach updated successfully");
-    res.redirect(`/beaches/${id}`);
+    res.redirect(`/beaches/${req.params.id}`);
   })
 );
 
 router.delete(
   "/:id",
   isAuth,
+  isAuthorBeach,
   isValidObjectId("/beaches"),
   asyncHandler(async (req, res) => {
     await Beach.findByIdAndDelete(req.params.id);

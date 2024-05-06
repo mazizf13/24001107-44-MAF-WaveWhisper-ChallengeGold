@@ -214,7 +214,7 @@ async function seedBeaches() {
 
   try {
     const newBeach = beaches.map((beach) => {
-      return { ...beach, author: "6638483fadf487edf4b0adeb" };
+      return { ...beach, author: "6638eec23d0183da9bd75c12" };
     });
 
     await Beach.deleteMany({});
