@@ -4,6 +4,7 @@ const { beachSchema } = require("../schemas/beach");
 const ErrorHandler = require("../utils/ErrorHandler");
 const asyncHandler = require("../utils/asyncHandler");
 const isValidObjectId = require("../middlewares/isValidObjectId");
+const isAuth = require("../middlewares/isAuth");
 
 const router = express.Router();
 
@@ -25,12 +26,13 @@ router.get(
   })
 );
 
-router.get("/create", (req, res) => {
+router.get("/create", isAuth, (req, res) => {
   res.render("beaches/create");
 });
 
 router.post(
   "/",
+  isAuth,
   validateBeach,
   asyncHandler(async (req, res, next) => {
     const beach = new Beach(req.body.beach);
@@ -51,6 +53,7 @@ router.get(
 
 router.get(
   "/:id/update",
+  isAuth,
   isValidObjectId("/beaches"),
   asyncHandler(async (req, res) => {
     const beach = await Beach.findById(req.params.id);
@@ -60,6 +63,7 @@ router.get(
 
 router.put(
   "/:id",
+  isAuth,
   isValidObjectId("/beaches"),
   validateBeach,
   asyncHandler(async (req, res) => {
@@ -73,6 +77,7 @@ router.put(
 
 router.delete(
   "/:id",
+  isAuth,
   isValidObjectId("/beaches"),
   asyncHandler(async (req, res) => {
     await Beach.findByIdAndDelete(req.params.id);
