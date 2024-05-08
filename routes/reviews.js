@@ -1,6 +1,5 @@
 const express = require("express");
-const Beach = require("../models/beach");
-const Review = require("../models/review");
+const ReviewController = require("../controllers/reviews");
 const { reviewSchema } = require("../schemas/review");
 const ErrorHandler = require("../utils/ErrorHandler");
 const asyncHandler = require("../utils/asyncHandler");
@@ -25,20 +24,7 @@ router.post(
   isAuth,
   isValidObjectId("/beaches"),
   validateReview,
-  asyncHandler(async (req, res) => {
-    const { beach_id } = req.params;
-
-    const review = new Review(req.body.review);
-    review.author = req.user._id;
-    await review.save();
-
-    const beach = await Beach.findById(beach_id);
-    beach.reviews.push(review);
-    await beach.save();
-
-    req.flash("success_msg", "Review added successfully");
-    res.redirect(`/beaches/${beach_id}`);
-  })
+  asyncHandler(ReviewController.store)
 );
 
 router.delete(
@@ -46,15 +32,7 @@ router.delete(
   isAuth,
   isAuthorReview,
   isValidObjectId("/beaches"),
-  asyncHandler(async (req, res) => {
-    const { beach_id, review_id } = req.params;
-    await Beach.findByIdAndUpdate(beach_id, {
-      $pull: { reviews: review_id },
-    });
-    await Review.findByIdAndDelete(review_id);
-    req.flash("success_msg", "Review deleted successfully");
-    res.redirect(`/beaches/${beach_id}`);
-  })
+  asyncHandler(ReviewController.destroy)
 );
 
 module.exports = router;

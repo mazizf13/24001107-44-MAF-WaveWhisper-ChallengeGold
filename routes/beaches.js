@@ -1,5 +1,5 @@
 const express = require("express");
-const Beach = require("../models/beach");
+const BeachController = require("../controllers/beaches");
 const { beachSchema } = require("../schemas/beach");
 const ErrorHandler = require("../utils/ErrorHandler");
 const asyncHandler = require("../utils/asyncHandler");
@@ -19,45 +19,18 @@ const validateBeach = (req, res, next) => {
   }
 };
 
-router.get(
-  "/",
-  asyncHandler(async (req, res) => {
-    const beaches = await Beach.find();
-    res.render("beaches/index", { beaches });
-  })
-);
+router.get("/", asyncHandler(BeachController.index));
 
 router.get("/create", isAuth, (req, res) => {
   res.render("beaches/create");
 });
 
-router.post(
-  "/",
-  isAuth,
-  validateBeach,
-  asyncHandler(async (req, res, next) => {
-    const beach = new Beach(req.body.beach);
-    await beach.save();
-    req.flash("success_msg", "Beach added succesfully");
-    res.redirect("/beaches");
-  })
-);
+router.post("/", isAuth, validateBeach, asyncHandler(BeachController.store));
 
 router.get(
   "/:id",
   isValidObjectId("/beaches"),
-  asyncHandler(async (req, res) => {
-    const beach = await Beach.findById(req.params.id)
-      .populate({
-        path: "reviews",
-        populate: {
-          path: "author",
-        },
-      })
-      .populate("author");
-    console.log(beach);
-    res.render("beaches/detail", { beach });
-  })
+  asyncHandler(BeachController.detail)
 );
 
 router.get(
@@ -65,10 +38,7 @@ router.get(
   isAuth,
   isAuthorBeach,
   isValidObjectId("/beaches"),
-  asyncHandler(async (req, res) => {
-    const beach = await Beach.findById(req.params.id);
-    res.render("beaches/update", { beach });
-  })
+  asyncHandler(BeachController.edit)
 );
 
 router.put(
@@ -77,11 +47,7 @@ router.put(
   isAuthorBeach,
   isValidObjectId("/beaches"),
   validateBeach,
-  asyncHandler(async (req, res) => {
-    await Beach.findByIdAndUpdate(req.params.id, { ...req.body.beach });
-    req.flash("success_msg", "Beach updated successfully");
-    res.redirect(`/beaches/${req.params.id}`);
-  })
+  asyncHandler(BeachController.update)
 );
 
 router.delete(
@@ -89,11 +55,7 @@ router.delete(
   isAuth,
   isAuthorBeach,
   isValidObjectId("/beaches"),
-  asyncHandler(async (req, res) => {
-    await Beach.findByIdAndDelete(req.params.id);
-    req.flash("success_msg", "Beach deleted successfully");
-    res.redirect("/beaches");
-  })
+  asyncHandler(BeachController.destroy)
 );
 
 module.exports = router;
