@@ -1,23 +1,12 @@
 const express = require("express");
 const BeachController = require("../controllers/beaches");
-const { beachSchema } = require("../schemas/beach");
-const ErrorHandler = require("../utils/ErrorHandler");
 const asyncHandler = require("../utils/asyncHandler");
 const isValidObjectId = require("../middlewares/isValidObjectId");
 const isAuth = require("../middlewares/isAuth");
 const { isAuthorBeach } = require("../middlewares/isAuthor");
+const { validateBeach } = require("../middlewares/validator");
 
 const router = express.Router();
-
-const validateBeach = (req, res, next) => {
-  const { error } = beachSchema.validate(req.body);
-  if (error) {
-    const msg = error.details.map((el) => el.message).join(",");
-    return next(new ErrorHandler(msg, 400));
-  } else {
-    next();
-  }
-};
 
 router.get("/", asyncHandler(BeachController.index));
 
