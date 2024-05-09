@@ -84,20 +84,24 @@
     <h5 class="text-center">Delete Images</h5>
     <div class="form-group form-check">
       <input type="checkbox" id="checkAll" class="form-check-input" />
-      <label for="checkAll" class="form-check-label">Check All</label>
+      <label for="checkall" class="form-check-label">Check All</label>
     </div>
-    <form action="/" class="d-flex flex-wrap">
+    <form
+      action="/beaches/<%= beach._id %>/images?_method=DELETE"
+      method="POST"
+      class="d-flex flex-wrap"
+    >
       <% beach.images.forEach((image, index) => { %>
       <div class="col-md-4">
         <div class="card mb-3">
           <img
-            src="/images/<%=image.filename %>"
+            src="/images/<%= image.filename %>"
             alt="<% beach.title %>"
             class="card-img-top"
           />
           <div class="card-body">
             <label class="custom-checkbox">
-              <input type="checkbox" name="images[]" value="<% image.url %>" />
+              <input type="checkbox" name="images[]" value="<%= image.url %>" />
               <span class="custom-checkbox-text">Choose</span>
             </label>
           </div>

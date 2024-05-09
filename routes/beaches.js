@@ -55,4 +55,12 @@ router.delete(
   asyncHandler(BeachController.destroy)
 );
 
+router.delete(
+  "/:id/images",
+  isAuth,
+  isAuthorBeach,
+  isValidObjectId("/beaches"),
+  asyncHandler(BeachController.destroyImage)
+);
+
 module.exports = router;
