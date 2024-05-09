@@ -63,7 +63,17 @@ module.exports.update = async (req, res) => {
 };
 
 module.exports.destroy = async (req, res) => {
-  await Beach.findByIdAndDelete(req.params.id);
+  const { id } = req.params;
+  const beach = await Beach.findById(id);
+
+  if (beach.images.length > 0) {
+    beach.images.forEach((image) => {
+      fs.unlink(image.url, (err) => new ErrorHandler(err));
+    });
+  }
+
+  await beach.deleteOne();
+
   req.flash("success_msg", "Beach deleted successfully");
   res.redirect("/beaches");
 };
