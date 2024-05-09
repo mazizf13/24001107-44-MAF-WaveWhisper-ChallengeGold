@@ -42,6 +42,7 @@ router.put(
   isAuth,
   isAuthorBeach,
   isValidObjectId("/beaches"),
+  upload.array("image", 5),
   validateBeach,
   asyncHandler(BeachController.update)
 );

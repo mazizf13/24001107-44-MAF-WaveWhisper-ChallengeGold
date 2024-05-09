@@ -1,4 +1,6 @@
 const Beach = require("../models/beach");
+const fs = require("fs");
+const ErrorHandler = require("../utils/ErrorHandler");
 
 module.exports.index = async (req, res) => {
   const beaches = await Beach.find();
@@ -39,7 +41,23 @@ module.exports.edit = async (req, res) => {
 };
 
 module.exports.update = async (req, res) => {
-  await Beach.findByIdAndUpdate(req.params.id, { ...req.body.beach });
+  const beach = await Beach.findByIdAndUpdate(req.params.id, {
+    ...req.body.beach,
+  });
+
+  if (req.files && req.files.length > 0) {
+    beach.images.forEach((image) => {
+      fs.unlink(image.url, (err) => new ErrorHandler(err));
+    });
+
+    const images = req.files.map((file) => ({
+      url: file.path,
+      filename: file.filename,
+    }));
+    beach.images = images;
+    await beach.save();
+  }
+
   req.flash("success_msg", "Beach updated successfully");
   res.redirect(`/beaches/${req.params.id}`);
 };
