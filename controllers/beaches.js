@@ -6,9 +6,17 @@ module.exports.index = async (req, res) => {
 };
 
 module.exports.store = async (req, res, next) => {
+  const images = req.files.map((file) => ({
+    url: file.path,
+    filename: file.filename,
+  }));
+
   const beach = new Beach(req.body.beach);
   beach.author = req.user._id;
+  beach.images = images;
+
   await beach.save();
+
   req.flash("success_msg", "Beach added succesfully");
   res.redirect("/beaches");
 };

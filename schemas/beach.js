@@ -6,6 +6,5 @@ module.exports.beachSchema = Joi.object({
     location: Joi.string().required(),
     cost: Joi.number().min(0).required(),
     description: Joi.string().required(),
-    image: Joi.string().required(),
   }).required(),
 });

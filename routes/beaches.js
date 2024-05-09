@@ -5,6 +5,7 @@ const isValidObjectId = require("../middlewares/isValidObjectId");
 const isAuth = require("../middlewares/isAuth");
 const { isAuthorBeach } = require("../middlewares/isAuthor");
 const { validateBeach } = require("../middlewares/validator");
+const upload = require("../configs/multer");
 
 const router = express.Router();
 
@@ -14,7 +15,13 @@ router.get("/create", isAuth, (req, res) => {
   res.render("beaches/create");
 });
 
-router.post("/", isAuth, validateBeach, asyncHandler(BeachController.store));
+router.post(
+  "/",
+  isAuth,
+  upload.array("image", 5),
+  validateBeach,
+  asyncHandler(BeachController.store)
+);
 
 router.get(
   "/:id",
