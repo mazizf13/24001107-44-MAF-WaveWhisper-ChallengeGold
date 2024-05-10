@@ -1,7 +1,7 @@
 const Beach = require("../models/beach");
 const fs = require("fs");
-const ErrorHandler = require("../utils/ErrorHandler");
 const { geojson } = require("../utils/hereMaps");
+const ErrorHandler = require("../utils/ErrorHandler");
 
 module.exports.index = async (req, res) => {
   const beaches = await Beach.find();
@@ -15,6 +15,8 @@ module.exports.store = async (req, res, next) => {
   }));
 
   const geoData = await geojson(req.body.beach.location);
+
+  console.log(geoData);
 
   const beach = new Beach(req.body.beach);
   beach.author = req.user._id;
