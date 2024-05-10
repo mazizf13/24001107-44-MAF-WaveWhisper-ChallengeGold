@@ -9,6 +9,7 @@ const ErrorHandler = require("./utils/ErrorHandler");
 const passport = require("passport");
 const localStrategy = require("passport-local");
 const User = require("./models/user");
+const hereMaps = require("./utils/hereMaps");
 const port = 3000;
 const app = express();
 
@@ -56,7 +57,10 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
+  const location = "Pandhawa Beach, Bali";
+  const reqLocation = await hereMaps.geocode(location);
+  console.log(reqLocation);
   res.render("home");
 });
 
