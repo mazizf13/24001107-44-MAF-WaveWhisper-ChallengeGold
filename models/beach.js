@@ -1,12 +1,24 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const Review = require("./review");
+const { required } = require("joi");
 
 const beachSchema = new Schema({
   title: String,
   cost: Number,
   description: String,
   location: String,
+  geojson: {
+    type: {
+      type: String,
+      enum: ["Point"],
+      required: true,
+    },
+    coordinates: {
+      type: [Number],
+      required: true,
+    },
+  },
   images: [
     {
       url: String,
