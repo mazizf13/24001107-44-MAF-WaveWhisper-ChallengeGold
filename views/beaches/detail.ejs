@@ -71,6 +71,10 @@
     </div>
   </div>
   <div class="col-6">
+    <div
+      style="width: 640px; height: 480px; margin-bottom: 5%"
+      id="mapContainer"
+    ></div>
     <% if(currentUser) { %>
     <h3>Leave a Review</h3>
     <form
@@ -167,3 +171,28 @@
     <% } %>
   </div>
 </div>
+
+<script>
+  const beach = <%- JSON.stringify(beach) %>;
+  const beachLocation = {lng: beach.geojson.coordinates[0], lat: beach.geojson.coordinates[1]};
+</script>
+
+<script>
+  // Initialize the platform object
+  const platform = new H.service.Platform({
+    apikey: "YdTEzRRe60yEV6rCRxyOoBpyn_rPqSXa_RgD4YrqoK0",
+  });
+
+  // Obtain the default map types from the platform object
+  const maptypes = platform.createDefaultLayers();
+
+  // Instantiate (and display) the map
+  const map = new H.Map(
+    document.getElementById("mapContainer"),
+    maptypes.vector.normal.map,
+    {
+      zoom: 10,
+      center: beachLocation,
+    }
+  );
+</script>

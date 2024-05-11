@@ -9,7 +9,7 @@ const geocode = async (address) => {
     const data = await response.json();
     return data.items[0];
   } catch (error) {
-    throw new ExpressError(error.message, 500);
+    throw new ErrorHandler(error.message, 500);
   }
 };
 
