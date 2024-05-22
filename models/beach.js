@@ -8,17 +8,6 @@ const beachSchema = new Schema({
   cost: Number,
   description: String,
   location: String,
-  geojson: {
-    type: {
-      type: String,
-      enum: ["Point"],
-      required: true,
-    },
-    coordinates: {
-      type: [Number],
-      required: true,
-    },
-  },
   images: [
     {
       url: String,
