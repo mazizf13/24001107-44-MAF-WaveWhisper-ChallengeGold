@@ -47,7 +47,7 @@ Home
 Beaches Page
 ![image](https://github.com/mazizf13/24001107-44-MAF-WaveWhisper-ChallengeGold/assets/113575990/e236df36-f542-47fe-9679-3ceb36b9b172)
 
-Beach Page
+Detail Page
 ![image](https://github.com/mazizf13/24001107-44-MAF-WaveWhisper-ChallengeGold/assets/113575990/1bea1539-dda1-448e-8b6c-435480981a04)
 
 Beach Page After Login (User Can Review)
@@ -58,3 +58,11 @@ User Can Edit And Delete Beach
 
 Update Page
 ![image](https://github.com/mazizf13/24001107-44-MAF-WaveWhisper-ChallengeGold/assets/113575990/bcfd0c0f-faa9-4960-8f5a-eee8d4e4c941)
+
+Create Page
+![image](https://github.com/mazizf13/24001107-44-MAF-WaveWhisper-ChallengeGold/assets/113575990/6d450ff1-cdce-43e3-a7f8-93e05d415d5c)
+
+User Cannot Add New Beach If Not Logged In
+![image](https://github.com/mazizf13/24001107-44-MAF-WaveWhisper-ChallengeGold/assets/113575990/4c1d0293-352b-47e9-8da0-31bd637e9860)
+
+
